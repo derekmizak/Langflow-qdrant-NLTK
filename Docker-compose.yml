@@ -1,0 +1,39 @@
+
+
+services:
+  langflow120:
+    build:
+      context: .
+      dockerfile: Dockerfile_langflow
+    container_name: langflow120
+    ports:
+      - "7860:7860"
+    environment:
+      - LANGFLOW_SAVE_DB_IN_CONFIG_DIR=true
+      - NLTK_DATA=/root/nltk_data  # Ensure NLTK finds its data
+    volumes:
+      - ./langflow_database:/root/.cache/langflow
+      - ./file_injest:/app/file_injest
+      - ./nltk_data:/root/nltk_data  # Mount NLTK data to persist across rebuilds
+    depends_on:
+      - qdrant120
+
+  qdrant120:
+    image: qdrant/qdrant:latest
+    container_name: qdrant120
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - ./qdrant_storage:/qdrant/storage:z
+      - ./file_injest:/file_injest
+
+volumes:
+  langflow_database:
+    driver: local
+  file_injest:
+    driver: local
+  qdrant_storage:
+    driver: local
+  nltk_data:  # New persistent volume for NLTK
+    driver: local

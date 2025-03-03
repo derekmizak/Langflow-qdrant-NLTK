@@ -1,0 +1,48 @@
+# Stage 1: Build environment
+FROM python:3.12-slim AS builder
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3-pip git curl gcc g++ unixodbc-dev build-essential \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Clone the LangFlow repository and checkout specific tag
+RUN git clone --depth=1 --branch 1.2.0 https://github.com/logspace-ai/langflow.git /app
+
+# Set the working directory
+WORKDIR /app
+RUN mkdir /app/file_injest
+
+# Install dependencies
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir . crewai pydantic
+
+# Stage 2: Runtime environment
+FROM python:3.12-slim
+
+# Install only required runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl git unixodbc-dev build-essential \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Copy the application from the builder stage
+COPY --from=builder /app /app
+
+# Install NLTK in the final runtime stage
+RUN pip install --no-cache-dir nltk
+
+# Download the required NLTK data (`punkt`) in the runtime container
+RUN python -c "import nltk; nltk.download('punkt')"
+RUN python -c "import nltk; nltk.download('punkt_tab')"
+
+# Set environment variable so NLTK finds its data
+ENV NLTK_DATA=/root/nltk_data
+
+# Ensure Langflow is installed globally (dependencies are already installed)
+RUN pip install --no-cache-dir /app
+
+# Expose the default LangFlow port
+EXPOSE 7860
+
+# Run LangFlow
+CMD ["python", "-m", "langflow", "run", "--host", "0.0.0.0", "--port", "7860"]
