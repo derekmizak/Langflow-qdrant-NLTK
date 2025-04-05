@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_langflow
-    container_name: langflow120
+    container_name: langflow132
     ports:
       - "7860:7860"
     environment:
@@ -20,7 +20,7 @@ services:
 
   qdrant120:
     image: qdrant/qdrant:latest
-    container_name: qdrant120
+    container_name: qdrant132
     ports:
       - "6333:6333"
       - "6334:6334"
