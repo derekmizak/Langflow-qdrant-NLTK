@@ -1,7 +1,7 @@
 
 
 services:
-  langflow120:
+  langflow133:
     build:
       context: .
       dockerfile: Dockerfile_langflow
@@ -18,7 +18,7 @@ services:
     depends_on:
       - qdrant120
 
-  qdrant120:
+  qdrant133:
     image: qdrant/qdrant:latest
     container_name: qdrant133
     ports:
