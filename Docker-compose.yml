@@ -16,7 +16,7 @@ services:
       - ./file_injest:/app/file_injest
       - ./nltk_data:/root/nltk_data  # Mount NLTK data to persist across rebuilds
     depends_on:
-      - qdrant120
+      - qdrant133
 
   qdrant133:
     image: qdrant/qdrant:latest
