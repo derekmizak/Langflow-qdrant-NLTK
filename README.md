@@ -37,8 +37,8 @@ docker-compose up -d --build
 
 This will:
 - Build the LangFlow image using `Dockerfile_langflow`
-- Start LangFlow (`langflow120`) on port **7860**
-- Start Qdrant (`qdrant120`) on ports **6333** and **6334**
+- Start LangFlow (`langflow133`) on port **7860**
+- Start Qdrant (`qdrant133`) on ports **6333** and **6334**
 
 ### 4️⃣ Access the Services
 
