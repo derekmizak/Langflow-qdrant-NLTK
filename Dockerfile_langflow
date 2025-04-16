@@ -14,8 +14,11 @@ RUN python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); 
 # Set environment variable for NLTK data
 ENV NLTK_DATA=/root/nltk_data
 
+# Set environment variable for Langflow file size limit (1000MB)
+ENV LANGFLOW_MAX_FILE_SIZE_UPLOAD=1000
+
 # Expose the port
 EXPOSE 7860
 
 # Command to run the application
-CMD ["python", "-m", "langflow", "run", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["python", "-m", "langflow", "run", "--host", "localhost", "--port", "7860"]
