@@ -15,14 +15,12 @@ services:
       - LANGFLOW_DATABASE_URL=postgresql://langflow:langflow@postgres:5432/langflow
       - LANGFLOW_CONFIG_DIR=/app/langflow
       - LANGFLOW_SAVE_DB_IN_CONFIG_DIR=true
-      - NLTK_DATA=/root/nltk_data
       - LANGFLOW_LOG_LEVEL=info
       - QDRANT_HOST=qdrant133
       - QDRANT_PORT=6333
     volumes:
       - langflow-data:/app/langflow
       - ./file_injest:/app/file_injest
-      - ./nltk_data:/root/nltk_data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7860/health"]

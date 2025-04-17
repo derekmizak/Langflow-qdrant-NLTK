@@ -8,13 +8,13 @@ RUN mkdir -p /app/file_injest
 # Install additional packages for NLTK and Qdrant integration
 RUN pip install --no-cache-dir qdrant-client nltk crewai
 
-# Download NLTK data
-RUN python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet')"
+# Download NLTK data directly into the container
+RUN python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('punkt_tab')"
 
-# Set environment variable for NLTK data
+# Set environment variable for NLTK data (using the default location)
 ENV NLTK_DATA=/root/nltk_data
 
-# Set environment variable for Langflow file size limit (1000MB)
+# Set environment variable for Langflow file size limit
 ENV LANGFLOW_MAX_FILE_SIZE_UPLOAD=1024
 
 # Expose the port
