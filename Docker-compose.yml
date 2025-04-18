@@ -1,9 +1,9 @@
 services:
-  langflow133:
+  langflow134:
     build:
       context: .
       dockerfile: Dockerfile_langflow
-    container_name: langflow133
+    container_name: langflow134
     ports:
       - "7860:7860"
     depends_on:
@@ -23,7 +23,7 @@ services:
       - ./file_injest:/app/file_injest
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7860/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:6333/collections"]
       interval: 30s
       timeout: 10s
       retries: 3
