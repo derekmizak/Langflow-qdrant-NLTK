@@ -21,6 +21,7 @@ services:
     volumes:
       - langflow-data:/app/langflow
       - ./file_injest:/app/file_injest
+      - ./flow_output:/app/flow_output
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:6333/collections"]
