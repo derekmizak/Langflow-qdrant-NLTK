@@ -1,4 +1,3 @@
-
 ### README.md  
 
 # LangFlow + Qdrant Dockerized Setup
@@ -9,6 +8,7 @@ This repository provides a Dockerized environment for running LangFlow alongside
 
 - **LangFlow**: A tool for managing and visualizing LLM pipelines.
 - **Qdrant**: A vector search database for efficient similarity search.
+- **PostgreSQL**: Database for LangFlow running on non-standard port 5433 to avoid conflicts.
 - **Persistent Storage**: Ensures data across container restarts.
 - **Preloaded NLTK Data**: Mounted for use in NLP-related operations.
 
@@ -44,15 +44,20 @@ This will:
 
 - **LangFlow UI**: Open [http://localhost:7860](http://localhost:7860)  
 - **Qdrant API**: Available at `http://localhost:6333/dashboard`
+- **PostgreSQL**: Available at `localhost:5433` (non-standard port to avoid conflicts with existing PostgreSQL instances)
+  - Username: langflow
+  - Password: langflow
+  - Database: langflow
 
 ## 📂 Mounted Volumes
 
-| Volume            | Description                              |
-|-------------------|--------------------------------------|
-| `langflow_database` | Stores LangFlow database files       |
-| `file_injest`      | Directory for file processing        |
-| `qdrant_storage`   | Persistent storage for Qdrant data  |
-| `nltk_data`        | NLTK data storage for NLP tasks     |
+| Volume             | Description                                     |
+|--------------------|-------------------------------------------------|
+| `langflow-data`    | Named volume for LangFlow application data     |
+| `postgres-data`    | Named volume for PostgreSQL database files     |
+| `./file_injest`    | Directory for file processing and document input|
+| `./flow_output`    | Directory for storing output from LangFlow     |
+| `./qdrant_storage` | Persistent storage for Qdrant vector database  |
 
 ## 🛑 Stopping & Cleaning Up
 
@@ -70,6 +75,7 @@ docker-compose down -v
 
 | Variable | Description |
 |----------|-------------|
+| `LANGFLOW_DATABASE_URL` | PostgreSQL connection string (using non-standard port 5433 externally) |
 | `LANGFLOW_SAVE_DB_IN_CONFIG_DIR` | Ensures LangFlow database is saved persistently |
 | `NLTK_DATA` | Specifies the path for NLTK data storage |
 
