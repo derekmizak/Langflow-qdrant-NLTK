@@ -51,13 +51,16 @@ This will:
 
 ## 📂 Mounted Volumes
 
-| Volume             | Description                                     |
+All data is stored in local directories within the project folder:
+
+| Directory           | Description                                     |
 |--------------------|-------------------------------------------------|
-| `langflow-data`    | Named volume for LangFlow application data     |
-| `postgres-data`    | Named volume for PostgreSQL database files     |
-| `./file_injest`    | Directory for file processing and document input|
-| `./flow_output`    | Directory for storing output from LangFlow     |
-| `./qdrant_storage` | Persistent storage for Qdrant vector database  |
+| `./langflow_data`   | LangFlow application data and configurations    |
+| `./postgres_data`   | PostgreSQL database files                      |
+| `./file_injest`     | Directory for file processing and document input|
+| `./flow_output`     | Directory for storing output from LangFlow     |
+| `./qdrant_storage`  | Persistent storage for Qdrant vector database  |
+| `./nltk_data`       | NLTK data storage for NLP tasks                |
 
 ## 🛑 Stopping & Cleaning Up
 

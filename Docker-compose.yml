@@ -17,9 +17,10 @@ services:
       - LANGFLOW_SAVE_DB_IN_CONFIG_DIR=true
       - LANGFLOW_LOG_LEVEL=info
     volumes:
-      - langflow-data:/app/langflow
+      - ./langflow_data:/app/langflow
       - ./file_injest:/app/file_injest
       - ./flow_output:/app/flow_output
+      - ./nltk_data:/root/nltk_data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:6333/collections"]
@@ -29,7 +30,7 @@ services:
       start_period: 40s
 
   postgres:
-    image: postgres:16
+    image: postgres:17
     container_name: langflow141-postgres
     environment:
       POSTGRES_USER: langflow
@@ -38,7 +39,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - ./postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U langflow"]
@@ -65,7 +66,3 @@ services:
       timeout: 15s
       retries: 5
       start_period: 40s
-
-volumes:
-  langflow-data:
-  postgres-data:

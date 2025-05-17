@@ -3,15 +3,15 @@ FROM langflowai/langflow:1.4.1
 
 # Create directories for file ingestion if needed
 USER root
-RUN mkdir -p /app/file_injest && mkdir -p /app/flow_output
+RUN mkdir -p /app/file_injest && mkdir -p /app/flow_output && mkdir -p /root/nltk_data
 
 # Install additional packages for NLTK and Qdrant integration
 RUN pip install --no-cache-dir qdrant-client nltk crewai
 
 # Download NLTK data directly into the container
-RUN python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('punkt_tab')"
+RUN python -c "import nltk; nltk.download('punkt', download_dir='/root/nltk_data'); nltk.download('stopwords', download_dir='/root/nltk_data'); nltk.download('wordnet', download_dir='/root/nltk_data'); nltk.download('punkt_tab', download_dir='/root/nltk_data')"
 
-# Set environment variable for NLTK data (using the default location)
+# Set environment variable for NLTK data
 ENV NLTK_DATA=/root/nltk_data
 
 # Set environment variable for Langflow file size limit
