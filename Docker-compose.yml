@@ -1,5 +1,5 @@
 services:
-  langflow134:
+  langflow141:
     build:
       context: .
       dockerfile: Dockerfile_langflow
