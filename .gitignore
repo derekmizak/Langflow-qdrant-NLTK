@@ -97,3 +97,5 @@ langflow_database/
 nltk_data/
 qdrant_storage/
 flow_output/
+langflow_data/
+postgres_data/

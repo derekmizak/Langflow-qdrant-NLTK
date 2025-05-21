@@ -3,16 +3,28 @@ FROM langflowai/langflow:1.4.1
 
 # Create directories for file ingestion if needed
 USER root
-RUN mkdir -p /app/file_injest && mkdir -p /app/flow_output && mkdir -p /root/nltk_data
+RUN mkdir -p /app/file_injest && mkdir -p /app/flow_output && mkdir -p /root/nltk_data && mkdir -p /usr/share/nltk_data
 
 # Install additional packages for NLTK and Qdrant integration
 RUN pip install --no-cache-dir qdrant-client nltk crewai
 
-# Download NLTK data directly into the container
-RUN python -c "import nltk; nltk.download('punkt', download_dir='/root/nltk_data'); nltk.download('stopwords', download_dir='/root/nltk_data'); nltk.download('wordnet', download_dir='/root/nltk_data'); nltk.download('punkt_tab', download_dir='/root/nltk_data')"
+# Download NLTK data to multiple locations to ensure availability
+RUN python -c "import nltk; \
+    nltk.download('punkt', download_dir='/root/nltk_data'); \
+    nltk.download('punkt_tab', download_dir='/root/nltk_data'); \
+    nltk.download('stopwords', download_dir='/root/nltk_data'); \
+    nltk.download('wordnet', download_dir='/root/nltk_data'); \
+    nltk.download('omw-1.4', download_dir='/root/nltk_data'); \
+    nltk.download('popular', download_dir='/root/nltk_data');"
 
-# Set environment variable for NLTK data
-ENV NLTK_DATA=/root/nltk_data
+# Copy and symlink data to all possible locations
+RUN cp -r /root/nltk_data/* /usr/share/nltk_data/ || true
+RUN mkdir -p /app/.venv/nltk_data && cp -r /root/nltk_data/* /app/.venv/nltk_data/ || true
+RUN mkdir -p /app/.venv/share/nltk_data && cp -r /root/nltk_data/* /app/.venv/share/nltk_data/ || true
+RUN mkdir -p /usr/local/share/nltk_data && cp -r /root/nltk_data/* /usr/local/share/nltk_data/ || true
+
+# Set environment variable for NLTK data (include multiple paths)
+ENV NLTK_DATA=/root/nltk_data:/usr/share/nltk_data:/app/.venv/nltk_data:/app/.venv/share/nltk_data:/usr/local/share/nltk_data
 
 # Set environment variable for Langflow file size limit
 ENV LANGFLOW_MAX_FILE_SIZE_UPLOAD=1024
@@ -20,5 +32,5 @@ ENV LANGFLOW_MAX_FILE_SIZE_UPLOAD=1024
 # Expose the port
 EXPOSE 7860
 
-# Command to run the application
-CMD ["python", "-m", "langflow", "run", "--host", "0.0.0.0", "--port", "7860"]
+# Command to run the application with verification of NLTK data
+CMD ["sh", "-c", "python -c \"import nltk; nltk.download('punkt'); nltk.download('punkt_tab'); nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4'); nltk.download('popular')\" && python -m langflow run --host 0.0.0.0 --port 7860"]
