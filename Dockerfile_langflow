@@ -1,5 +1,5 @@
 # Use the official langflow image as base
-FROM langflowai/langflow:1.4.2
+FROM langflowai/langflow:1.4.3
 
 # Create directories for file ingestion if needed
 USER root
