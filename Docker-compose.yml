@@ -9,7 +9,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      qdrant133:
+      qdrant:
         condition: service_started
     environment:
       - LANGFLOW_DATABASE_URL=postgresql://langflow:langflow@postgres:5432/langflow

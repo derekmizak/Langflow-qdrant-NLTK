@@ -1,6 +1,8 @@
-### README.md  
+### README.md
 
 # LangFlow + Qdrant Dockerized Setup
+
+> **Note:** This repository is for educational and demonstration purposes only. It is not intended for production use.
 
 This repository provides a Dockerized environment for running LangFlow alongside Qdrant, a high-performance vector database. The setup ensures data persistence, NLP support, and efficient container orchestration.
 
