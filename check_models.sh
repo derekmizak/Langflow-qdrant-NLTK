@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_ID="llm-202512"
-REGION="europe-west2"
+REGION="us-central1"
 TOKEN=$(gcloud auth print-access-token)
 
 check_model() {
@@ -25,15 +25,15 @@ echo "Checking availability in $REGION for project $PROJECT_ID..."
 
 check_model "gemini-1.5-pro-001"
 check_model "gemini-1.5-flash-001"
-check_model "gemini-1.0-pro"
-check_model "text-bison"
-check_model "chat-bison"
-check_model "gemini-1.5-pro"
+check_model "gemini-3-pro-preview"
+check_model "gemini-2.5-pro"
+check_model "gemini-2.5-flash"
+
 
 # Control check
 REGION_CONTROL="us-central1"
 echo "--- Control Check: $REGION_CONTROL ---"
 REGION=$REGION_CONTROL
-check_model "gemini-1.0-pro"
-check_model "text-bison"
+check_model "gemini-1.5-pro"
+check_model "gemini-1.5-flash"
 
